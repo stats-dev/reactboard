@@ -1,0 +1,133 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.1.0'
+	id 'io.spring.dependency-management' version '1.1.0'
+	id 'com.github.node-gradle.node' version '4.0.0'
+}
+
+group = 'com.bit'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+//java 외에도 node가 같이 빌드되도록 제거하고 위에 붙인다.
+//java {
+//	sourceCompatibility = '17'
+//}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	runtimeOnly 'com.mysql:mysql-connector-j'
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+	// https://mvnrepository.com/artifact/com.zaxxer/HikariCP
+	implementation 'com.zaxxer:HikariCP:5.0.1'
+	//jjwt의 3대 패키지를 받는다.
+	// https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api
+	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
+	// https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-impl
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
+	// https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-jackson
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
+	implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.4'
+
+
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+
+//npm 명령어 실행시키는 명령어 작성
+task appNpmInstall(type: NpmTask) {
+	dependsOn "npmSetup" //npmSetup 끝나고 실해오디게함
+	description = "Installs dependencies from pacakge.json" //그냥 설명: 패키지 json 안에 있는 의존성 설치한다.
+	workingDir = file("${projectDir}/src/main/reactjs") //설정된 전역변수이므로, 해당 springboard 프로젝트 경로로 projectDir로 들어감
+	args = ["install"] //npm install 시켜라
+}
+
+//reactjs 경로 변수로 지정
+def reactAppDir = "$projectDir/src/main/reactjs"
+
+processResources {
+	dependsOn "copyReactFile"
+}
+
+
+//task 하나 더 준다.
+task copyReactFile(type: Copy) {
+	dependsOn "buildReact"
+	from "$reactAppDir/build" //build 끝나면 build 폴더가 생기는데, 그걸 지정해서
+	into "$projectDir/src/main/resources/static/" //static 폴더 내부로 옮겨주겠다.
+}
+
+
+task buildReact(type: Exec) {
+	dependsOn "installReact"
+	workingDir "$reactAppDir"
+	inputs.dir "$reactAppDir"
+	group = BasePlugin.BUILD_GROUP
+	if(System.getProperty('os.name').toLowerCase().contains('windows')){
+		commandLine "npm.cmd", "run-script", "build"
+	} else {
+		commandLine "npm", "run-script", "build"
+	}
+}
+
+//react 설치관련 task 추가
+task installReact(type: Exec) {
+	workingDir "$reactAppDir"
+	inputs.dir "$reactAppDir"
+	group = BasePlugin.BUILD_GROUP
+	if(System.getProperty('os.name').toLowerCase().contains('windows')){
+		commandLine "npm.cmd", "audit", "fix"
+		commandLine "npm.cmd", "install"
+	} else {
+		commandLine "npm", "audit", "fix"
+		commandLine "npm", "install"
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
