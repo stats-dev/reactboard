@@ -148,7 +148,7 @@ const Join = () => {
             };
 
             try {
-                const response = await axios.post('http://localhost:9090/user/join', user);
+                const response = await axios.post('/user/join', user);
 
                 console.log(response);
 

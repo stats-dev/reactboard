@@ -13,7 +13,7 @@ const BoardList_practice = () => {
     useEffect(() => {
         const getBoardList = async() => {
             try {
-                const response = await axios.get('http://localhost:9090/board/board-list', {
+                const response = await axios.get('/board/board-list', {
                     //여기에 config에 해당하는 headers > Autorization 작성
                     headers: {
                         Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`

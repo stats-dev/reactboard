@@ -50,7 +50,7 @@ const FileList = ({boardFileList, addChangeFile, changeOriginFile}) => {
                 margin: '5px', border: '1px solid #00f', zIndex: 1}}>
                 <input type="file" style={{display: 'none'}} id={`changeFile${boardFile.boardFileNo}`} onChange={(e) => changeBoardFile(e, boardFile.boardFileNo)}></input>
                         <img style={{width: '100%', height: '100%', zIndex: 'none',
-                                cursor: 'pointer'}} className="fileImg" id={`img${boardFile.boardFileNo}`} src={`http://localhost:9090/upload/${boardFile.boardFileName}`} onClick={() => openFileInput(boardFile.boardFileNo)}                            ></img>
+                                cursor: 'pointer'}} className="fileImg" id={`img${boardFile.boardFileNo}`} src={`/upload/${boardFile.boardFileName}`} onClick={() => openFileInput(boardFile.boardFileNo)}                            ></img>
 
                 <input type="button" className="btnDel" value="x" style={{width: '30px', height: '30px', position: 'absolute',
                     right: '0px', bottom: '0px', zIndex: 999,

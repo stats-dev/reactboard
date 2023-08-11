@@ -48,7 +48,7 @@ const BoardList = () => {
     ])
 
 
-        // 렌더링되자마자 axios를 통해 http://localhost:9090/board-list 에 있는 정보를 가져온다.
+        // 렌더링되자마자 axios를 통해 /board-list 에 있는 정보를 가져온다.
         useEffect(() => {
             // axios를 사용하여 게시글 목록을 가져오는 비동기 함수를 정의합니다.
             const fetchBoardList = async () => {
@@ -63,7 +63,7 @@ const BoardList = () => {
                 };
 
                 try {
-                    const response = await axios.get('http://localhost:9090/board/board-list', config);
+                    const response = await axios.get('/board/board-list', config);
                     // 가져온 정보로 게시글 목록을 업데이트합니다.
                     setBoardList(response.data);
                     console.log(response);
