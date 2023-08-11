@@ -27,7 +27,7 @@ const Login = ({setIsLogin}) => {
 
         const loginAxios = async () => {
             try {
-                const response = await axios.post('http://localhost:9090/user/login', 
+                const response = await axios.post('/user/login',
                 {   //join에서 처럼 user 객체로 넣어줘도 되고, 아니면 이렇게 json으로 수동 입력도 가능하다.
                     userId: userId,
                     userPw: userPw //키값 userPw, state 값 userPw 넣는다.

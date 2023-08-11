@@ -18,7 +18,7 @@ const Board = () => {
     useEffect(() => {
         const getBoard = async () => {
             try {
-                const response = await axios.get(`http://localhost:9090/board/board/${boardNo}`, {
+                const response = await axios.get(`/board/board/${boardNo}`, {
                     headers: {
                         Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
                     }

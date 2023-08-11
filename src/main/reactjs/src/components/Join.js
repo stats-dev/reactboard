@@ -43,7 +43,7 @@ const Join = () => {
 
             try {
                 // 받아주는 userDTO 객체 동일하게 넘기기 userId
-                const response = await axios.post('http://localhost:9090/user/id-check', {userId: userId});
+                const response = await axios.post('/user/id-check', {userId: userId});
 
                 console.log(response);
 
